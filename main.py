@@ -48,7 +48,7 @@ async def home():
 @app.get("/integration-spec")
 async def integration_spec():
     try:
-        with open("integration-settings.json", "r") as dmb:
+        with open("integration_settings.json", "r") as dmb:
             integration_spec = json.load(dmb)
         return JSONResponse(integration_spec)
     except FileNotFoundError:
