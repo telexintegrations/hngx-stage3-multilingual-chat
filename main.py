@@ -31,8 +31,9 @@ async def modify_message(payload: IncomingMessage):
     target_language = "es"  # Example target language
 
     try:
-        modified_message_google = translate_text_google(incoming_message, target_language, google_api_key)
-        modified_message_microsoft = translate_text_microsoft(incoming_message, target_language, microsoft_subscription_key)
+        modified_message_google = "Goog translated message"
+        modified_message_microsoft = "Microsoft translated message"
+        # modified_message_microsoft = translate_text_microsoft(incoming_message, target_language, microsoft_subscription_key)
         
         modified_message = f"Google: {modified_message_google}, Microsoft: {modified_message_microsoft}"
         
