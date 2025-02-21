@@ -1,14 +1,14 @@
 {
     "data": {
       "date": {
-        "created_at": "2025-02-19",
-        "updated_at": "2025-02-19"
+        "created_at": "2025-02-17",
+        "updated_at": "2025-02-20"
       },
       "descriptions": {
         "app_description": "The Multilingual Chat integration automatically translates incoming messages to a specified language, facilitating communication among users who speak different languages.",
-        "app_logo": "/multilingual-logo.jpg",
+        "app_logo": "https://www.imghippo.com/i/dgQH4208es.jpg",
         "app_name": "Multilingual Chat",
-        "app_url": "URL to the application or service.",
+        "app_url": "https://hngx-stage3-multilingual-chat.onrender.com",
         "background_color": "#FF5733"
       },
       "integration_category": "Communication & Collaboration",
@@ -45,7 +45,7 @@
           "options": ["en", "es", "fr", "de", "it", "ja", "zh"]
         }
       ],
-      "target_url": "URL for integration or service."
+      "target_url": "https://hngx-stage3-multilingual-chat.onrender.com/webhook"
     }
   }
   
