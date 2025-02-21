@@ -1,0 +1,51 @@
+{
+    "data": {
+      "date": {
+        "created_at": "2025-02-19",
+        "updated_at": "2025-02-19"
+      },
+      "descriptions": {
+        "app_description": "The Multilingual Chat integration automatically translates incoming messages to a specified language, facilitating communication among users who speak different languages.",
+        "app_logo": "/multilingual-logo.jpg",
+        "app_name": "Multilingual Chat",
+        "app_url": "URL to the application or service.",
+        "background_color": "#FF5733"
+      },
+      "integration_category": "Communication & Collaboration",
+      "integration_type": "modifier",
+      "is_active": false,
+      "output": [
+        {
+          "label": "output_channel_1",
+          "value": true
+        },
+        {
+          "label": "output_channel_2",
+          "value": false
+        }
+      ],
+      "key_features": [
+        "Automatic translation of incoming messages.",
+        "Supports multiple languages.",
+        "Easy configuration for preferred language.",
+        "Seamless integration with Telex channels."
+      ],
+      "permissions": {
+        "monitoring_user": {
+          "always_online": true,
+          "display_name": "Multilingual Chat"
+        }
+      },
+      "settings": [
+        {
+          "label": "Preferred Language",
+          "type": "dropdown",
+          "required": true,
+          "default": "en",
+          "options": ["en", "es", "fr", "de", "it", "ja", "zh"]
+        }
+      ],
+      "target_url": "URL for integration or service."
+    }
+  }
+  
