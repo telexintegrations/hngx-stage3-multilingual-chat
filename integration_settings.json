@@ -26,7 +26,7 @@
         "label": "Preferred Language",
         "type": "dropdown",
         "required": true,
-        "default": "French",
+        "default": "German",
         "options": [
            "English",
             "French",
