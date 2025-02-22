@@ -22,7 +22,7 @@
     "author": "MantleBearer",
     "settings": [
       {
-        "label": "Preferred Language",
+        "label": "preferredLanguage",
         "type": "dropdown",
         "required": true,
         "default": "fr",
@@ -37,7 +37,7 @@
         ]
       },
       {
-        "label": "Preferred Translator",
+        "label": "preferredTranslator",
         "type": "dropdown",
         "required": true,
         "default": "default",
@@ -45,14 +45,14 @@
         "options": ["default","google","microsoft"]
       },
       {
-        "label": "Google API Key",
+        "label": "googleAPIKey",
         "type": "text",
         "required": false,
         "description": "Enter your Google API Key if you selected Google as the preferred translator",
         "default": ""
       },
       {
-        "label": "Microsoft API Key",
+        "label": "microsoftAPIKey",
         "type": "text",
         "required": false,
         "description": "Enter your Microsoft API Key if you selected Microsoft as the preferred translator",

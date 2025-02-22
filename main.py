@@ -27,10 +27,10 @@ class Setting(BaseModel):
 class IncomingMessage(BaseModel):
     message: str
     settings: List[Setting]
-    translator: Optional[str] = ["default", "google", "microsoft"]
-    target_language: Optional[str] = ["en", "es", "fr", "de", "it", "ja", "zh"]
-    google_api_key: Optional[str] = None
-    microsoft_api_key: Optional[str] = None
+    preferredLanguage: Optional[str] = "fr"
+    preferredTranslator: Optional[str] = "default"
+    googleAPIKey: Optional[str] = None
+    microsoftAPIKey: Optional[str] = None
 
 class ResponseMessage(BaseModel):
     message: str
@@ -38,13 +38,13 @@ class ResponseMessage(BaseModel):
 @app.post("/webhook", response_model=ResponseMessage)
 async def modify_message(payload: IncomingMessage):
     incoming_message = payload.message
-    translator_type = payload.translator
-    target_language_name = payload.target_language
+    target_language_name = payload.preferredLanguage
+    translator_type = payload.preferredTranslator
     target_language = target_language_name
-    google_api_key = payload.google_api_key
-    microsoft_api_key = payload.microsoft_api_key
+    google_api_key = payload.googleAPIKey
+    microsoft_api_key = payload.microsoftAPIKey
 
-    
+    # Check for valid language selection
     valid_languages = ["en", "es", "fr", "de", "it", "ja", "zh"]
     if target_language not in valid_languages:
         raise HTTPException(status_code=400, detail="Invalid language selection. Supported languages are: en, es, fr, de, it, ja, zh")
