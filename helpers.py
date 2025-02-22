@@ -1,5 +1,5 @@
 # Language code mapping
-LANGUAGE_CODES = {
+LANGUAGE_MAP = {
     "English": "en",
     "French": "fr",
     "Spanish": "es",
