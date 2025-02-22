@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from typing import List, Optional
 import json
-import os
 from translate import Translator
 from deep_translator import GoogleTranslator, MicrosoftTranslator
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,11 +12,10 @@ app = FastAPI()
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Update this with your allowed origins
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
 
 class Setting(BaseModel):
@@ -46,20 +44,28 @@ async def modify_message(payload: IncomingMessage):
     google_api_key = payload.google_api_key
     microsoft_api_key = payload.microsoft_api_key
 
+    
+    valid_languages = ["en", "es", "fr", "de", "it", "ja", "zh"]
+    if target_language not in valid_languages:
+        raise HTTPException(status_code=400, detail="Invalid language selection. Supported languages are: en, es, fr, de, it, ja, zh")
+
     try:
         if not incoming_message:
             raise HTTPException(status_code=400, detail="Message content cannot be empty")
 
+        # Handle Google Translator
         if translator_type == "google":
             if not google_api_key:
                 raise HTTPException(status_code=400, detail="Google API key is required for Google Translator")
             modified_message = GoogleTranslator(source='auto', target=target_language, api_key=google_api_key).translate(incoming_message)
 
+        # Handle Microsoft Translator
         elif translator_type == "microsoft":
             if not microsoft_api_key:
                 raise HTTPException(status_code=400, detail="Microsoft API key is required for Microsoft Translator")
             modified_message = MicrosoftTranslator(source='auto', target=target_language, api_key=microsoft_api_key).translate(incoming_message)
 
+        # Default translation logic
         else:
             translator = Translator(to_lang=target_language)
             modified_message = translator.translate(incoming_message)
