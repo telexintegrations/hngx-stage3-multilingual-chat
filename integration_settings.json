@@ -83,12 +83,8 @@
         "label": "Preferred Translator",
         "type": "dropdown",
         "required": true,
-        "default": "default",
-        "options": [
-          { "value": "default", "label": "Default" },
-          { "value": "google", "label": "Google Translator" },
-          { "value": "microsoft", "label": "Microsoft Translator" }
-        ]
+        "default": "Default Translator",
+        "options": ["Default Translator", "Google Translator", "Microsoft Translator"]
       },
       {
         "label": "Google API Key",
