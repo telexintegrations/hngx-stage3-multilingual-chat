@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
-from typing import List
+from typing import List, Optional
 import json
-import os
 from translate import Translator
+from deep_translator import GoogleTranslator, MicrosoftTranslator
 
 app = FastAPI()
 
@@ -17,6 +17,10 @@ class Setting(BaseModel):
 class IncomingMessage(BaseModel):
     message: str
     settings: List[Setting]
+    translator: Optional[str] = "default"
+    target_language: Optional[str] = "es"
+    google_api_key: Optional[str] = None
+    microsoft_api_key: Optional[str] = None
 
 class ResponseMessage(BaseModel):
     message: str
@@ -25,13 +29,25 @@ class ResponseMessage(BaseModel):
 async def modify_message(payload: IncomingMessage):
     incoming_message = payload.message
     settings = payload.settings
+    translator_type = payload.translator
+    target_language = payload.target_language
+    google_api_key = payload.google_api_key
+    microsoft_api_key = payload.microsoft_api_key
     
-    target_language = "es"  # Example target language
-
     try:
-        # Use the `translate` package for translation
-        translator = Translator(to_lang=target_language)
-        modified_message = translator.translate(incoming_message)
+        if translator_type == "google":
+            if not google_api_key:
+                return ResponseMessage(message="Input your Google API key")
+            modified_message = GoogleTranslator(source='auto', target=target_language, api_key=google_api_key).translate(incoming_message)
+        
+        elif translator_type == "microsoft":
+            if not microsoft_api_key:
+                return ResponseMessage(message="Input your Microsoft API key")
+            modified_message = MicrosoftTranslator(source='auto', target=target_language, api_key=microsoft_api_key).translate(incoming_message)
+        
+        else:
+            translator = Translator(to_lang=target_language)
+            modified_message = translator.translate(incoming_message)
         
     except Exception as e:
         return ResponseMessage(message=str(e))

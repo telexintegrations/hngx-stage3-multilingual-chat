@@ -17,7 +17,8 @@
     "key_features": [
       "Automatic translation of incoming messages",
       "Supports multiple languages",
-      "Easy configuration for preferred language. Seamless integration with Telex channels"
+      "Easy configuration for preferred language and translator",
+      "Seamless integration with Telex channels"
     ],
     "author": "MantleBearer",
     "settings": [
@@ -27,17 +28,76 @@
         "required": true,
         "default": "fr",
         "options": [
-          "en",
-          "es",
-          "fr",
-          "de",
-          "it",
-          "ja",
-          "zh"
+          { "code": "af", "name": "Afrikaans" },
+          { "code": "sq", "name": "Albanian" },
+          { "code": "am", "name": "Amharic" },
+          { "code": "ar", "name": "Arabic" },
+          { "code": "hy", "name": "Armenian" },
+          { "code": "az", "name": "Azerbaijani" },
+          { "code": "eu", "name": "Basque" },
+          { "code": "be", "name": "Belarusian" },
+          { "code": "bn", "name": "Bengali" },
+          { "code": "bs", "name": "Bosnian" },
+          { "code": "bg", "name": "Bulgarian" },
+          { "code": "ca", "name": "Catalan" },
+          { "code": "ceb", "name": "Cebuano" },
+          { "code": "ny", "name": "Chichewa" },
+          { "code": "zh", "name": "Chinese" },
+          { "code": "co", "name": "Corsican" },
+          { "code": "hr", "name": "Croatian" },
+          { "code": "cs", "name": "Czech" },
+          { "code": "da", "name": "Danish" },
+          { "code": "nl", "name": "Dutch" },
+          { "code": "en", "name": "English" },
+          { "code": "eo", "name": "Esperanto" },
+          { "code": "et", "name": "Estonian" },
+          { "code": "tl", "name": "Filipino" },
+          { "code": "fi", "name": "Finnish" },
+          { "code": "fr", "name": "French" },
+          { "code": "gl", "name": "Galician" },
+          { "code": "ka", "name": "Georgian" },
+          { "code": "de", "name": "German" },
+          { "code": "el", "name": "Greek" },
+          { "code": "gu", "name": "Gujarati" },
+          { "code": "ht", "name": "Haitian Creole" },
+          { "code": "ha", "name": "Hausa" },
+          { "code": "haw", "name": "Hawaiian" },
+          { "code": "iw", "name": "Hebrew" },
+          { "code": "hi", "name": "Hindi" },
+          { "code": "hmn", "name": "Hmong" },
+          { "code": "hu", "name": "Hungarian" },
+          { "code": "is", "name": "Icelandic" },
+          { "code": "ig", "name": "Igbo" },
+          { "code": "id", "name": "Indonesian" },
+          { "code": "ga", "name": "Irish" },
+          { "code": "it", "name": "Italian" },
+          { "code": "ja", "name": "Japanese" }
         ]
+      },
+      {
+        "label": "Preferred Translator",
+        "type": "dropdown",
+        "required": true,
+        "default": "default",
+        "options": [
+          { "value": "default", "label": "Default" },
+          { "value": "google", "label": "Google Translator" },
+          { "value": "microsoft", "label": "Microsoft Translator" }
+        ]
+      },
+      {
+        "label": "Google API Key",
+        "type": "text",
+        "required": false,
+        "default": ""
+      },
+      {
+        "label": "Microsoft API Key",
+        "type": "text",
+        "required": false,
+        "default": ""
       }
     ],
-
     "target_url": "https://hngx-stage3-multilingual-chat.onrender.com/webhook"
   }
 }
