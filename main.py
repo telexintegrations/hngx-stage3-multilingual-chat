@@ -79,14 +79,14 @@ async def modify_message(payload: IncomingMessage):
 async def home():
     return {"message": "Welcome to Multilingual Chat application"}
 
-# @app.get("/integration-spec")
-# async def integration_spec():
-#     try:
-#         with open("integration_settings.json", "r") as dmb:
-#             integration_spec = json.load(dmb)
-#         return JSONResponse(integration_spec)
-#     except FileNotFoundError:
-#         raise HTTPException(status_code=404, detail="Integration spec not found")
+@app.get("/integration-spec")
+async def integration_spec():
+    try:
+        with open("integration_settings.json", "r") as dmb:
+            integration_spec = json.load(dmb)
+        return JSONResponse(integration_spec)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Integration spec not found")
 
 @app.get("/health")
 async def health_check():
