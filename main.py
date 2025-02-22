@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from typing import List
 import json
 import os
-from chat_translator import translate_text_google, translate_text_microsoft
+from translate import Translator
 
 app = FastAPI()
 
@@ -26,16 +26,12 @@ async def modify_message(payload: IncomingMessage):
     incoming_message = payload.message
     settings = payload.settings
     
-    google_api_key = os.getenv("GOOGLE_API_KEY")
-    microsoft_subscription_key = os.getenv("MICROSOFT_SUBSCRIPTION_KEY")
     target_language = "es"  # Example target language
 
     try:
-        modified_message_google = "Goog translated message"
-        modified_message_microsoft = "Microsoft translated message"
-        # modified_message_microsoft = translate_text_microsoft(incoming_message, target_language, microsoft_subscription_key)
-        
-        modified_message = f"Google: {modified_message_google}, Microsoft: {modified_message_microsoft}"
+        # Use the `translate` package for translation
+        translator = Translator(to_lang=target_language)
+        modified_message = translator.translate(incoming_message)
         
     except Exception as e:
         return ResponseMessage(message=str(e))
