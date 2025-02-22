@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from typing import List, Optional
@@ -7,6 +8,14 @@ from translate import Translator
 from deep_translator import GoogleTranslator, MicrosoftTranslator
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Setting(BaseModel):
     label: str
@@ -33,22 +42,22 @@ async def modify_message(payload: IncomingMessage):
     target_language = payload.target_language
     google_api_key = payload.google_api_key
     microsoft_api_key = payload.microsoft_api_key
-    
+
     try:
         if translator_type == "google":
             if not google_api_key:
                 return ResponseMessage(message="Input your Google API key")
             modified_message = GoogleTranslator(source='auto', target=target_language, api_key=google_api_key).translate(incoming_message)
-        
+
         elif translator_type == "microsoft":
             if not microsoft_api_key:
                 return ResponseMessage(message="Input your Microsoft API key")
             modified_message = MicrosoftTranslator(source='auto', target=target_language, api_key=microsoft_api_key).translate(incoming_message)
-        
+
         else:
             translator = Translator(to_lang=target_language)
             modified_message = translator.translate(incoming_message)
-        
+
     except Exception as e:
         return ResponseMessage(message=str(e))
 
