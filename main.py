@@ -4,15 +4,17 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional
 import json
+import os
 from translate import Translator
 from deep_translator import GoogleTranslator, MicrosoftTranslator
+from helpers import get_language_code
 
 app = FastAPI()
 
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],  # Update this with your allowed origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,29 +30,12 @@ class IncomingMessage(BaseModel):
     message: str = Field(..., min_length=1, max_length=1000)
     settings: List[Setting]
     translator: Optional[str] = "Default Translator"
-    target_language: Optional[str] = "English"
+    target_language: Optional[str] = "French (Français)"
     google_api_key: Optional[str] = None
     microsoft_api_key: Optional[str] = None
 
 class ResponseMessage(BaseModel):
     message: str
-
-# Language code mapping
-LANGUAGE_CODES = {
-    "English": "en",
-    "French": "fr",
-    "Spanish": "es",
-    "German": "de",
-    "Italian": "it",
-    "Chinese": "zh",
-    "Japanese": "ja",
-    "Korean": "ko",
-    "Portuguese": "pt",
-    "Russian": "ru"
-}
-
-def get_language_code(language_name):
-    return LANGUAGE_CODES.get(language_name, "en")
 
 def translate_message(translator_type, incoming_message, target_language, google_api_key=None, microsoft_api_key=None):
     try:
@@ -78,11 +63,6 @@ async def modify_message(payload: IncomingMessage):
     incoming_message = payload.message
     translator_type = payload.translator
     target_language_name = payload.target_language
-
-    # Validate target language
-    if target_language_name not in LANGUAGE_CODES:
-        raise HTTPException(status_code=400, detail="Unsupported target language")
-    
     target_language = get_language_code(target_language_name)
     google_api_key = payload.google_api_key
     microsoft_api_key = payload.microsoft_api_key
