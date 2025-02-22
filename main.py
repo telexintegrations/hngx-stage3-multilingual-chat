@@ -27,8 +27,8 @@ class Setting(BaseModel):
 class IncomingMessage(BaseModel):
     message: str
     settings: List[Setting]
-    translator: Optional[str] = "default"
-    target_language: Optional[str] = "fr"
+    translator: Optional[str] = ["default", "google", "microsoft"]
+    target_language: Optional[str] = ["en", "es", "fr", "de", "it", "ja", "zh"]
     google_api_key: Optional[str] = None
     microsoft_api_key: Optional[str] = None
 
