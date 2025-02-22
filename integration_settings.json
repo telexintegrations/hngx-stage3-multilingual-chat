@@ -2,12 +2,12 @@
   "data": {
     "date": {
       "created_at": "2025-02-17",
-      "updated_at": "2025-02-21"
+      "updated_at": "2025-02-20"
     },
     "descriptions": {
       "app_name": "Multilingual Chat",
       "app_description": "The Multilingual Chat integration automatically translates incoming messages to a specified language, facilitating communication among users who speak different languages.",
-      "app_logo": "https://shorturl.at/Jx04d",
+      "app_logo": "https://iili.io/2iIqu8g.jpg",
       "app_url": "https://hngx-stage3-multilingual-chat.onrender.com/",
       "background_color": "#fff"
     },
@@ -17,8 +17,7 @@
     "key_features": [
       "Automatic translation of incoming messages",
       "Supports multiple languages",
-      "Easy configuration for preferred language and translator",
-      "Seamless integration with Telex channels"
+      "Easy configuration for preferred language. Seamless integration with Telex channels"
     ],
     "author": "MantleBearer",
     "settings": [
@@ -26,40 +25,41 @@
         "label": "Preferred Language",
         "type": "dropdown",
         "required": true,
-        "default": "German",
+        "default": "fr",
         "options": [
-           "English",
-            "French",
-            "Spanish",
-            "German",
-            "Italian",
-            "Chinese",
-            "Japanese",
-            "Korean",
-            "Portuguese",
-            "Russian"
+          "en",
+          "es",
+          "fr",
+          "de",
+          "it",
+          "ja",
+          "zh"
         ]
       },
       {
         "label": "Preferred Translator",
         "type": "dropdown",
         "required": true,
-        "default": "Default Translator",
-        "options": ["Default Translator", "Google Translator", "Microsoft Translator"]
+        "default": "default",
+        "description": "Select the preferred translator service",
+        "options": ["default","google","microsoft"]
       },
       {
         "label": "Google API Key",
         "type": "text",
         "required": false,
+        "description": "Enter your Google API Key if you selected Google as the preferred translator",
         "default": ""
       },
       {
         "label": "Microsoft API Key",
         "type": "text",
         "required": false,
+        "description": "Enter your Microsoft API Key if you selected Microsoft as the preferred translator",
         "default": ""
       }
     ],
+
     "target_url": "https://hngx-stage3-multilingual-chat.onrender.com/webhook"
   }
 }

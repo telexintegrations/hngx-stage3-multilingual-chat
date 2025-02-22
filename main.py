@@ -6,7 +6,6 @@ import json
 import os
 from translate import Translator
 from deep_translator import GoogleTranslator, MicrosoftTranslator
-from helpers import get_language_code
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -30,8 +29,8 @@ class Setting(BaseModel):
 class IncomingMessage(BaseModel):
     message: str
     settings: List[Setting]
-    translator: Optional[str] = "Default Translator"
-    target_language: Optional[str] = "French"
+    translator: Optional[str] = "default"
+    target_language: Optional[str] = "fr"
     google_api_key: Optional[str] = None
     microsoft_api_key: Optional[str] = None
 
@@ -43,7 +42,7 @@ async def modify_message(payload: IncomingMessage):
     incoming_message = payload.message
     translator_type = payload.translator
     target_language_name = payload.target_language
-    target_language = get_language_code(target_language_name)
+    target_language = target_language_name
     google_api_key = payload.google_api_key
     microsoft_api_key = payload.microsoft_api_key
 
@@ -51,12 +50,12 @@ async def modify_message(payload: IncomingMessage):
         if not incoming_message:
             raise HTTPException(status_code=400, detail="Message content cannot be empty")
 
-        if translator_type == "Google Translator":
+        if translator_type == "google":
             if not google_api_key:
                 raise HTTPException(status_code=400, detail="Google API key is required for Google Translator")
             modified_message = GoogleTranslator(source='auto', target=target_language, api_key=google_api_key).translate(incoming_message)
 
-        elif translator_type == "Microsoft Translator":
+        elif translator_type == "microsoft":
             if not microsoft_api_key:
                 raise HTTPException(status_code=400, detail="Microsoft API key is required for Microsoft Translator")
             modified_message = MicrosoftTranslator(source='auto', target=target_language, api_key=microsoft_api_key).translate(incoming_message)
