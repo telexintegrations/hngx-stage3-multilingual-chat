@@ -7,8 +7,19 @@ import os
 from translate import Translator
 from deep_translator import GoogleTranslator, MicrosoftTranslator
 from helpers import get_language_code
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Update this with your allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+
+)
 
 class Setting(BaseModel):
     label: str
