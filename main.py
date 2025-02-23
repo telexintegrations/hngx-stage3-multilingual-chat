@@ -45,7 +45,7 @@ async def translate_text(request: TranslationRequest):
     # Print the selected language
     print(f"Selected language: {target_language} for message: {message} -> {translated_message}")
 
-    return {"translated_message": translated_message, "language": target_language}
+    return translated_message
 
 @app.get("/")
 async def home():
