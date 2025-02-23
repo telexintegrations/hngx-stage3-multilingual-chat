@@ -2,11 +2,8 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-# from deep_translator import Translator
 import json
 from translate import Translator
-
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -30,7 +27,7 @@ async def translate_text(request: TranslationRequest):
     message = request.message.strip()
     target_language = "fr"  # Default language
 
-    # Parse settings
+    # Parse settings to determine target language
     for setting in request.settings:
         if setting.get("label") == "preferredLanguage" and setting.get("default") in VALID_LANGUAGES:
             target_language = setting.get("default")
@@ -40,7 +37,7 @@ async def translate_text(request: TranslationRequest):
         raise HTTPException(status_code=400, detail="Message content cannot be empty")
 
     try:
-        translator = Translator(target=target_language)
+        translator = Translator(to_lang=target_language)
         translated_message = translator.translate(message)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
@@ -54,8 +51,8 @@ async def home():
 @app.get("/integration-spec")
 async def integration_spec():
     try:
-        with open("integration_settings.json", "r") as dmb:
-            integration_spec = json.load(dmb)
+        with open("integration_settings.json", "r") as file:
+            integration_spec = json.load(file)
         return JSONResponse(integration_spec)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Integration spec not found")
