@@ -3,7 +3,9 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import json
+import re
 from translate import Translator
+from langdetect import detect, LangDetectException
 from helpers import get_language_code
 
 app = FastAPI()
@@ -49,13 +51,24 @@ async def translate_text(request: TranslationRequest):
         raise HTTPException(status_code=400, detail="Message content cannot be empty")
 
     try:
-        translator = Translator(to_lang=find_language_code)
-        translated_message = translator.translate(message)
+        # Detect the language of the input message
+        cleaned_text = re.sub(r'[^\w\s]<p>|</p>', '', message)
+        detected_language = detect(cleaned_text)
+        
+        # Perform translation only if the detected language is different from the target language
+        if detected_language != find_language_code:
+            translator = Translator(to_lang=find_language_code)
+            translated_message = translator.translate(cleaned_text)
+        else:
+            translated_message = cleaned_text
+
+    except LangDetectException as e:
+        raise HTTPException(status_code=500, detail=f"Language detection failed: {str(e)}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
 
     # Print the selected language
-    print(f"Selected language: {target_language} for message: {message} -> {translated_message} -> {find_language_code}")
+    print(f"Detected language: {detected_language} -> Selected language: {target_language} for message: {message} -> {translated_message} -> {find_language_code}")
 
     return {"message": translated_message}
 
