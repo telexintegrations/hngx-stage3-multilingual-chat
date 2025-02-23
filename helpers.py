@@ -33,7 +33,7 @@ LANGUAGE_MAP = {
     "Gujarati (ગુજરાતી)": "gu",
     "Haitian Creole (Kreyòl Ayisyen)": "ht",
     "Hausa (Hausa)": "ha",
-    "Hawaiian (ʻŌlelo Hawaiʻi)": "haw",
+    "Hawaiian (Ōlelo Hawaii)": "haw",
     "Hebrew (עברית)": "iw",
     "Hindi (हिन्दी)": "hi",
     "Hmong (Hmoob)": "hmn",
