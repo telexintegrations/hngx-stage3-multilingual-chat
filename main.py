@@ -25,7 +25,7 @@ class TranslationRequest(BaseModel):
     message: str
     settings: list[dict]
 
-@app.post("/webhook", response_model=ResponseMessage)
+@app.post("/webhook")
 async def translate_text(request: TranslationRequest):
     message = request.message.strip()
     target_language = "fr"  # Default language
