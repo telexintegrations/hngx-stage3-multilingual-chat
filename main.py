@@ -25,8 +25,8 @@ class TranslationRequest(BaseModel):
 @app.post("/webhook")
 async def translate_text(request: TranslationRequest):
     message = request.message.strip()
-    target_language = "fr"  # Default language
-
+    target_language = "fr"
+    
     # Parse settings to determine target language
     for setting in request.settings:
         if setting.get("label") == "preferredLanguage" and setting.get("default") in VALID_LANGUAGES:
@@ -41,6 +41,9 @@ async def translate_text(request: TranslationRequest):
         translated_message = translator.translate(message)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
+
+    # Print the selected language
+    print(f"Selected language: {target_language}")
 
     return {"translated_message": translated_message, "language": target_language}
 
