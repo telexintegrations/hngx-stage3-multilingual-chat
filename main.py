@@ -43,7 +43,7 @@ async def translate_text(request: TranslationRequest):
         raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
 
     # Print the selected language
-    print(f"Selected language: {target_language}")
+    print(f"Selected language: {target_language} for message: {message} -> {translated_message}")
 
     return {"translated_message": translated_message, "language": target_language}
 
