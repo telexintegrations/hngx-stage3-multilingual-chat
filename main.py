@@ -36,6 +36,7 @@ class TranslationRequest(BaseModel):
 async def translate_text(request: TranslationRequest):
     message = request.message.strip()
     target_language = "fr"
+    find_language_code = "en"
     
     # Parse settings to determine target language
     for setting in request.settings:
