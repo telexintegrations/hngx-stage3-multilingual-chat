@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import json
 from translate import Translator
+from helpers import get_language_code
 
 app = FastAPI()
 
@@ -16,7 +17,16 @@ app.add_middleware(
 )
 
 # Valid languages
-VALID_LANGUAGES = ["en", "es", "fr", "de", "it", "ja", "zh"]
+VALID_LANGUAGES = [
+    "af", "sq", "am", "ar", "hy", "az", 
+    "eu", "be", "bn", "bs", "bg", "ca", 
+    "ceb", "ny", "zh", "co", "hr", "cs", 
+    "da", "nl", "en", "eo", "et", "tl", 
+    "fi", "fr", "gl", "ka", "de", "el", 
+    "gu", "ht", "ha", "haw", "iw", "hi", 
+    "hmn", "hu", "is", "ig", "id", "ga", 
+    "it", "ja", "jv", "kn", "kk", "km", "ko"
+    ]
 
 class TranslationRequest(BaseModel):
     message: str
@@ -29,8 +39,9 @@ async def translate_text(request: TranslationRequest):
     
     # Parse settings to determine target language
     for setting in request.settings:
-        if setting.get("label") == "preferredLanguage" and setting.get("default") in VALID_LANGUAGES:
-            target_language = setting.get("default")
+        find_language_code = get_language_code(setting.get("default"))
+        if setting.get("label") == "preferredLanguage" and get_language_code in VALID_LANGUAGES:
+            target_language = find_language_code
             break
 
     if not message:
