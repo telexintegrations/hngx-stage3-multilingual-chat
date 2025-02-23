@@ -49,7 +49,7 @@ async def translate_text(request: TranslationRequest):
         raise HTTPException(status_code=400, detail="Message content cannot be empty")
 
     try:
-        translator = Translator(to_lang=target_language)
+        translator = Translator(to_lang=find_language_code)
         translated_message = translator.translate(message)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
