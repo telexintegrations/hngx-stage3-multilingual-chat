@@ -21,45 +21,10 @@
     ],
     "author": "MantleBearer",
     "settings": [
-      {
-        "label": "preferredLanguage",
-        "type": "dropdown",
-        "required": true,
-        "default": "fr",
-        "options": [
-          "en",
-          "es",
-          "fr",
-          "de",
-          "it",
-          "ja",
-          "zh"
-        ]
-      },
-      {
-        "label": "preferredTranslator",
-        "type": "dropdown",
-        "required": true,
-        "default": "default",
-        "description": "Select the preferred translator service",
-        "options": ["default","google","microsoft"]
-      },
-      {
-        "label": "googleAPIKey",
-        "type": "text",
-        "required": false,
-        "description": "Enter your Google API Key if you selected Google as the preferred translator",
-        "default": ""
-      },
-      {
-        "label": "microsoftAPIKey",
-        "type": "text",
-        "required": false,
-        "description": "Enter your Microsoft API Key if you selected Microsoft as the preferred translator",
-        "default": ""
-      }
+      {"default": "de", "label": "preferredLanguage", "options": ["en", "es", "fr", "de", "it", "ja", "zh"], "required": true, "type": "dropdown"}
     ],
 
     "target_url": "https://hngx-stage3-multilingual-chat.onrender.com/webhook"
   }
 }
+
