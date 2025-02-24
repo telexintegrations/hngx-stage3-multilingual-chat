@@ -28,7 +28,7 @@ VALID_LANGUAGES = [
     "gu", "ht", "ha", "haw", "iw", "hi", 
     "hmn", "hu", "is", "ig", "id", "ga", 
     "it", "ja", "jv", "kn", "kk", "km", "ko"
-]
+    ]
 
 class TranslationRequest(BaseModel):
     message: str
@@ -38,14 +38,14 @@ class TranslationRequest(BaseModel):
 async def translate_text(request: TranslationRequest):
     message = request.message.strip()
     target_language = "fr"
+    find_language_code = "en"
     
     # Parse settings to determine target language
     for setting in request.settings:
-        if setting.get("label") == "preferredLanguage":
-            find_language_code = get_language_code(setting.get("default"))
-            if find_language_code in VALID_LANGUAGES:
-                target_language = find_language_code
-                break
+        find_language_code = get_language_code(setting.get("default"))
+        if setting.get("label") == "preferredLanguage" and get_language_code in VALID_LANGUAGES:
+            target_language = find_language_code
+            break
 
     if not message:
         raise HTTPException(status_code=400, detail="Message content cannot be empty")
@@ -55,12 +55,16 @@ async def translate_text(request: TranslationRequest):
         cleaned_text = re.sub(r'[^\w\s]<p>|</p>', '', message)
         detected_language = detect(cleaned_text)
         
-        # Perform translation only if the detected language is different from the target language
-        if detected_language != target_language:
-            translator = Translator(to_lang=target_language)
+        # Translate the message to the target language
+        if detected_language != find_language_code:
+            translator = Translator(from_lang=detected_language, to_lang=find_language_code)
             translated_message = translator.translate(cleaned_text)
-        else:
+
+        elif detected_language == find_language_code:
             translated_message = cleaned_text
+            
+        else:
+            translated_message = "Error: Language not supported"
 
     except LangDetectException as e:
         raise HTTPException(status_code=500, detail=f"Language detection failed: {str(e)}")
@@ -68,7 +72,7 @@ async def translate_text(request: TranslationRequest):
         raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
 
     # Print the selected language
-    print(f"Detected language: {detected_language} -> Selected language: {target_language} for message: {message} -> {translated_message} -> {target_language}")
+    print(f"Detected language: {detected_language} -> Selected language: {target_language} for message: {message} -> {translated_message} -> {find_language_code}")
 
     return {"message": translated_message}
 
