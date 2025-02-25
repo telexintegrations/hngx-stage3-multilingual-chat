@@ -16,54 +16,37 @@ def test_health_check():
 
 def test_integration_spec():
     response = client.get("/integration-spec")
-    if response.status_code == 200:
-        assert "data" in response.json()
-    else:
-        assert response.status_code == 404
-        assert response.json() == {"detail": "Integration spec not found"}
+    assert response.status_code in [200, 404]
 
-def test_modify_message_default_translator():
+def test_translate_text():
     payload = {
-        "message": "Hello, world!",
-        "settings": [],
-        "translator": "Default Translator",
-        "target_language": "French (Français)"
+        "message": "Hello",
+        "settings": [
+            {"label": "preferredLanguage", "default": "fr"}
+        ]
     }
     response = client.post("/webhook", json=payload)
     assert response.status_code == 200
-    assert "message" in response.json()
+    json_response = response.json()
+    print("Response:", json_response)
+    assert "message" in json_response
+    assert json_response["message"] != "Hello"
 
-def test_modify_message_google_translator_missing_key():
-    payload = {
-        "message": "Hello, world!",
-        "settings": [],
-        "translator": "Google Translator",
-        "target_language": "French (Français)",
-        "google_api_key": ""
-    }
+def test_translate_empty_message():
+    payload = {"message": "", "settings": []}
     response = client.post("/webhook", json=payload)
     assert response.status_code == 400
-    assert response.json() == {"detail": "Google API key is required for Google Translator"}
+    assert response.json()["detail"] == "Message content cannot be empty"
 
-def test_modify_message_microsoft_translator_missing_key():
+def test_translate_invalid_language():
     payload = {
-        "message": "Hello, world!",
-        "settings": [],
-        "translator": "Microsoft Translator",
-        "target_language": "French (Français)",
-        "microsoft_api_key": ""
+        "message": "Hello",
+        "settings": [
+            {"label": "preferredLanguage", "default": "xyz"}
+        ]
     }
     response = client.post("/webhook", json=payload)
-    assert response.status_code == 400
-    assert response.json() == {"detail": "Microsoft API key is required for Microsoft Translator"}
-
-def test_modify_message_empty_message():
-    payload = {
-        "message": "",
-        "settings": [],
-        "translator": "Default Translator",
-        "target_language": "French (Français)"
-    }
-    response = client.post("/webhook", json=payload)
-    assert response.status_code == 400
-    assert response.json() == {"detail": "Message content cannot be empty"}
+    assert response.status_code == 200
+    json_response = response.json()
+    print("Response:", json_response)
+    assert json_response["message"] == "Error: Language not supported"

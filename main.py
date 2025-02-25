@@ -20,15 +20,25 @@ app.add_middleware(
 
 # Valid languages
 VALID_LANGUAGES = [
-    "af", "sq", "am", "ar", "hy", "az", 
-    "eu", "be", "bn", "bs", "bg", "ca", 
-    "ceb", "ny", "zh", "co", "hr", "cs", 
-    "da", "nl", "en", "eo", "et", "tl", 
-    "fi", "fr", "gl", "ka", "de", "el", 
-    "gu", "ht", "ha", "haw", "iw", "hi", 
-    "hmn", "hu", "is", "ig", "id", "ga", 
-    "it", "ja", "jv", "kn", "kk", "km", "ko"
-    ]
+    "af", "sq", "am", "ar", "hy", "az",
+    "eu", "be", "bn", "bs", "bg", "ca",
+    "ceb", "ny", "zh", "co", "hr", "cs",
+    "da", "nl", "en", "eo", "et", "tl",
+    "fi", "fr", "gl", "ka", "de", "el",
+    "gu", "ht", "ha", "haw", "iw", "hi",
+    "hmn", "hu", "is", "ig", "id", "ga",
+    "it", "ja", "jv", "kn", "kk", "km", "ko",
+    "ku", "ky", "lo", "la", "lv", "lt", "lb", 
+    "mk", "mg", "ms", "ml", "mt", "mi", "mr", 
+    "mn", "my", "ne", "no", "or", "ps", "fa", 
+    "pl", "pt", "pa", "ro", "ru", "sm", "gd", 
+    "sr", "st", "sn", "sd", "si", "sk", "sl", 
+    "so", "es", "su", "sw", "sv", "tg", "ta", 
+    "tt", "te", "th", "tr", "tk", "uk", "ur", 
+    "ug", "uz", "vi", "cy", "xh", "yi", "yo", 
+    "zu"
+]
+
 
 class TranslationRequest(BaseModel):
     message: str
@@ -47,6 +57,8 @@ async def translate_text(request: TranslationRequest):
             target_language = find_language_code
             break
 
+        
+
     if not message:
         raise HTTPException(status_code=400, detail="Message content cannot be empty")
 
@@ -54,17 +66,23 @@ async def translate_text(request: TranslationRequest):
         # Detect the language of the input message
         cleaned_text = re.sub(r'[^\w\s]<p>|</p>', '', message)
         detected_language = detect(cleaned_text)
+
+        # Check if the target language and detected language is supported
+        if target_language or find_language_code or detected_language not in VALID_LANGUAGES:
+            translated_message = "Error: Language not supported"
         
         # Translate the message to the target language
-        if detected_language != find_language_code:
+        elif detected_language != find_language_code:
             translator = Translator(from_lang=detected_language, to_lang=find_language_code)
             translated_message = translator.translate(cleaned_text)
 
         elif detected_language == find_language_code:
-            translated_message = cleaned_text
+            translator = Translator(from_lang=detected_language, to_lang=find_language_code)
+            translated_message = translator.translate(cleaned_text)
             
         else:
-            translated_message = "Error: Language not supported"
+            translator = Translator(from_lang=detected_language, to_lang=find_language_code)
+            translated_message = translator.translate(cleaned_text)
 
     except LangDetectException as e:
         raise HTTPException(status_code=500, detail=f"Language detection failed: {str(e)}")
@@ -83,7 +101,7 @@ async def home():
 @app.get("/integration-spec")
 async def integration_spec():
     try:
-        with open("integration_settings.json", "r") as file:
+        with open("integration_settings.json", "r", encoding="utf-8") as file:
             integration_spec = json.load(file)
         return JSONResponse(integration_spec)
     except FileNotFoundError:

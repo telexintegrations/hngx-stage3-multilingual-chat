@@ -1,94 +1,156 @@
-# Multilingual Chat: A Telex Modifier Integrations
+# Multilingual Chat: A Telex Modifier Integration
 
 ## 📌 Introduction
-This integration will automatically translate incoming messages to a specified language. It will detect the language of incoming messages and translate them to user selected language, making communication more inclusive and accessible.
+This integration automatically translates incoming messages to a specified language. It detects the language of incoming messages and translates them into the user's selected language, making communication more inclusive and accessible. Built as a Modifier Integration for Telex, it ensures seamless multilingual interaction within Telex channels.
 
 ---
 
 ## Integration Overview
-I built a Modifier Integrations, out of the following types of Telex integrations:
+I built a Modifier Integration, leveraging Telex's integration types:
 
 1. *Modifier Integrations*: Modify new messages entering a channel (e.g., profanity filter, text translator).
 2. *Interval Integrations*: Send messages to a channel at set intervals (e.g., Bitcoin price tracker, website uptime monitor).
 3. *Output Integrations*: Route data from a Telex channel to external services (e.g., email notifications, Discord webhooks).
 
-My integration adhered to the Telex documentation and best coding practices.
+This integration follows Telex's documentation and best coding practices.
 
 ---
 
-## Resources
-I made sure that I review the following resources before starting the integration:
-- [Telex Documentation](https://telex.im)
-- [Integration Settings Spec](https://docs.telex.im/docs/Integrations/settings)
-- [GitHub Best Practices](https://docs.github.com/en/get-started/writing-on-github)
-- [Conventional Commits](https://www.conventionalcommits.org/)
-- [Good vs Bad Commit Messages](https://chris.beams.io/posts/git-commit/)
-- [How to Write Better Git Commit Messages](https://cbea.ms/git-commit/)
+## 🚀 Features
+- *Automatic Language Detection*: Identifies the source language of incoming messages.
+- *Real-time Translation*: Translates messages to the user's preferred language.
+- *Seamless Integration*: Works within Telex channels without manual intervention.
+- *Error Handling*: Gracefully handles unsupported languages and other translation errors.
 
 ---
-*Before you start coding:*
-1. *Check Existing Proposals:*
-   - Review the [Responses Sheet](#) to avoid duplicating someone else's integration.
-   - First come, first served!
 
-2. *Submit Your Idea:*
-   - Use the [Integration Proposal Form](#) to submit your integration idea.
-   - You can pick from the available list or propose a new idea.
-   - Clearly describe your integration, its purpose, and how it will function.
-   - Specify the type of integration (Modifier, Interval, or Output).
+## 🔧 Setup Instructions
 
-3. *Approval Process:*
-   - Wait for mentor approval in the [Responses Sheet](#) before proceeding.
+### 1. Clone the Repository
+bash
+# Clone this repository
+git clone [hngx-stage3-multilingual-chat](https://github.com/telexintegrations/hngx-stage3-multilingual-chat.git)
+cd hngx-stage3-multilingual-chat
 
-### 2. Integration Development
 
-1. *Followed Telex Documentation:*
-   - Adhered to the guidelines for my chosen integration type.
+### 2. Create a Virtual Environment
+bash
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
 
-2. *Defined Integration JSON:*
-   - Ensured my JSON configuration follows the [Integration Settings Spec](https://docs.telex.im/docs/Integrations/settings).
 
-3. *Wrote Clean Code:*
-   - Used meaningful variable names.
-   - Followed Git best practices.
-
-4. *Testing:*
-   - Tested my integration locally.
-   - Provided test cases and examples.
+### 3. Install Dependencies
+bash
+pip install -r requirements.txt
 
 
 
-## ✔ Acceptance Criteria
+
+### 4. Run the FastAPI Server
+bash
+uvicorn main:app --reload --port 8000
+
+
+---
+
+## Testing
+
+### Run Tests
+Ensure all test cases pass before deployment:
+bash
+pytest tests.py
+
+
+### Example Test Cases
+- *test_translate_text*: Ensures messages are correctly translated.
+- *test_translate_invalid_language*: Validates error handling for unsupported languages.
+- *test_webhook_response*: Checks if the webhook returns the correct JSON responses.
+
+---
+
+## Deployment
+
+### Deploy to AWS EC2
+1. *SSH into your EC2 instance:*
+bash
+ssh -i your-key.pem ubuntu@your-ec2-ip
+
+2. *Install Docker:*
+bash
+sudo apt update
+sudo apt install docker.io
+
+3. *Build and Run the Docker container:*
+bash
+docker build -t multilingual-chat .
+docker run -d -p 8000:8000 multilingual-chat
+
+4. *Set up Nginx for Reverse Proxy:*
+Ensure your FastAPI app is accessible publicly:
+bash
+sudo nano /etc/nginx/sites-available/multilingual_chat
+
+Add the following configuration:
+nginx
+server {
+    listen 80;
+    server_name your-ec2-ip;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+Enable the configuration and restart Nginx:
+bash
+sudo ln -s /etc/nginx/sites-available/multilingual_chat /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+
+
+---
+
+## How to Use the Integration
+
+1. *Add the Integration to Your Telex Channel:*
+   - Go to your Telex dashboard.
+   - Navigate to *Integrations* via the *Apps* > *Add New Integration*.
+   - Enter your *Integration JSON Url*.
+2. *Configure the Integration:*
+   - Set the webhook URL to your FastAPI app (e.g., http://your-ec2-ip/webhook).
+   - Choose the preferred language in the settings.
+3. *Test the Integration:*
+   - Send a message in any language to your Telex channel.
+   - Watch it auto-translate to the configured language!
+
+---
+
+## Screenshots
+
+A screenshot of the integration Telex
+
+1. *Incoming Message Detected*
+
+
+
+2. *Language Detected and Translated*
+
+
+
+3. *Telex Channel Output*
+
+---
+
 
 ### Functionality
-- My integration works as described in the Telex documentation.
-- It correctly follows the Modifier type specifications.
+- Integration works as described in the Telex documentation.
+- Properly modifies messages using the Modifier type.
+
 
 ### Code Quality
 - Clean, maintainable, and well-documented code.
-- Proper error handling and input validation.
-
-### Testing
-- Tested locally.
-- Includes unit tests where applicable.
-
-
----
-
-
-
-*How to submit:*
-1. *Ensure all requirements are met:*
-   - Double-check functionality, code quality, and documentation.
-
-2. *Include the following links:*
-   - GitHub repository (under telex_integrations)
-   - Hosted JSON file URL
-   - Deployed integration URL in the test Telex organization
-
-3. *Review your work:*
-   - Check for errors, broken links, and proper functionality.
-
-4. *Submit via the designated form:*
-   - Use the [Submission Form](#) to send in your task.
+- Effective error handling and input validation.
 
