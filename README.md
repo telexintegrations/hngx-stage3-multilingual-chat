@@ -130,17 +130,24 @@ sudo systemctl restart nginx
 
 ## Screenshots
 
-A screenshot of the integration Telex
+Screenshots of the integration on Telex Test Org. 4 Multilingual-Chat Channel
 
 1. *Incoming Message Detected*
+![image](https://github.com/user-attachments/assets/1503c4d7-f4e9-477a-962b-a3acdd30a5c8)
+
+
 
 
 
 2. *Language Detected and Translated*
+![image](https://github.com/user-attachments/assets/945c478f-e186-4eab-b5c7-8da461b5ae41)
+
 
 
 
 3. *Telex Channel Output*
+![image](https://github.com/user-attachments/assets/0b8b6a0b-8329-4fa6-a29c-f7913fcf2c43)
+
 
 ---
 
